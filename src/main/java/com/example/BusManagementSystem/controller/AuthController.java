@@ -84,5 +84,20 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @GetMapping("/me")
+    @Operation(summary = "Get current user", description = "Returns the currently authenticated user's profile")
+    public ResponseEntity<AuthDTO.UserProfileResponse> getCurrentUser(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        AuthDTO.UserProfileResponse response = new AuthDTO.UserProfileResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole()
+        );
+
+        return ResponseEntity.ok(response);
+    }
 }
 

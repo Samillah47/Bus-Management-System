@@ -1,6 +1,7 @@
 package com.example.BusManagementSystem.security;
 
 import com.example.BusManagementSystem.model.User;
+import com.fasterxml.jackson.databind.ObjectMapper; // Use this for safe JSON
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ import java.io.IOException;
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final ObjectMapper objectMapper; // Spring will automatically inject this
 
     @Override
     public void onAuthenticationSuccess(
@@ -24,22 +28,33 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             HttpServletResponse response,
             Authentication authentication) throws IOException {
 
-        User user  = (User) authentication.getPrincipal();
-        String jwt = jwtTokenProvider.generateToken(user);
+        try {
+            User user = (User) authentication.getPrincipal();
+            String jwt = jwtTokenProvider.generateToken(user);
 
-        log.info("OAuth2 login success for: {}", user.getEmail());
+            log.info("OAuth2 login successful for user: {}", user.getEmail());
 
-        // Return JWT as JSON response
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(
-            "{"                                          +
-            "\"token\":\""    + jwt              + "\"," +
-            "\"username\":\"" + user.getUsername()+ "\"," +
-            "\"email\":\""    + user.getEmail()  + "\"," +
-            "\"role\":\""     + user.getRole()   + "\""  +
-            "}"
-        );
+            // Create a Map instead of a manual String to ensure valid JSON
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("token", jwt);
+            responseData.put("username", user.getUsername());
+            responseData.put("email", user.getEmail());
+            responseData.put("role", user.getRole());
+
+            // Set response headers
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            // Write the Map as JSON using ObjectMapper
+            response.getWriter().write(objectMapper.writeValueAsString(responseData));
+
+        } catch (Exception e) {
+            log.error("Error in OAuth2SuccessHandler: ", e);
+            // If something goes wrong, send a clear error message to the browser
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Internal Server Error during OAuth2 success logic\"}");
+        }
     }
 }

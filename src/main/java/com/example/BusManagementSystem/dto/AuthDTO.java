@@ -48,4 +48,14 @@ public class AuthDTO {
         private String email;
         private Role role;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserProfileResponse {
+        private Long id;
+        private String username;
+        private String email;
+        private Role role;
+    }
 }
