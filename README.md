@@ -319,8 +319,9 @@ class UserControllerTest {
     void login_shouldReturnJwt_whenCredentialsAreValid()
 }
 ```
+### Tests
+![Tests Passing](Screenshots/13-test1.png) |![Tests Passing](Screenshots/13-test2.png)
 
-![Tests Passing](Screenshots/13-tests-passing.png)
 ---
 
 ##  API Endpoints
