@@ -22,18 +22,38 @@ public class UserController {
     private final UserRepository userRepository;
 
     @GetMapping
-    @Operation(summary = "Get all users", description = "Returns a list of all users (public endpoint)")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get all users", description = "Returns a list of all users (ADMIN only)")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get user by ID", description = "Returns a single user by their ID")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    @Operation(summary = "Get user by ID", description = "Returns a single user by their ID (ADMIN or own user)")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    @Operation(summary = "Update user by ID", description = "Updates a user by their ID (ADMIN or own user)")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+
+        user.setUsername(userDetails.getUsername());
+        user.setEmail(userDetails.getEmail());
+        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+            user.setPassword(userDetails.getPassword());
+        }
+        user.setRole(userDetails.getRole());
+
+        User updatedUser = userRepository.save(user);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")

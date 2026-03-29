@@ -16,13 +16,13 @@ import com.example.BusManagementSystem.service.BusService;
 
 @RestController
 @RequestMapping("/api/buses")
-@PreAuthorize("hasRole('ADMIN')")
 public class BusController {
 
     @Autowired
     private BusService busService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BusResponseDTO> createBus(@RequestBody BusRequestDTO requestDTO) {
         return new ResponseEntity<>(busService.createBus(requestDTO), HttpStatus.CREATED);
     }
@@ -38,6 +38,7 @@ public class BusController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BusResponseDTO> updateBus(
             @PathVariable Long id,
             @RequestBody BusRequestDTO requestDTO) {
@@ -45,6 +46,7 @@ public class BusController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteBus(@PathVariable Long id) {
         busService.deleteBus(id);
         return new ResponseEntity<>("Bus deleted successfully", HttpStatus.OK);

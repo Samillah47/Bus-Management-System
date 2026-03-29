@@ -220,12 +220,16 @@ public enum Role {
 
 ### Supported Providers
 
-![Google Login Page](screenshots/09-google-login-page.png)
-
 | Provider | Trigger URL | Callback URL |
 |----------|-------------|--------------|
 | Google | `/oauth2/authorization/google` | `/login/oauth2/code/google` |
 | GitHub | `/oauth2/authorization/github` | `/login/oauth2/code/github` |
+
+### Google Login Flow
+| Step | Screenshot |
+| :--- | :--- |
+| **Google Login Page** — Browser redirects to Google | ![Google Login](screenshots/08-google-login.png) |
+| **Google Token Response** — JSON with JWT after login | ![Google Token](screenshots/09-google-after-login-token.png) |
 
 ### Full OAuth2 Flow
 
@@ -272,13 +276,12 @@ Google Login  ──┘
 A user will NEVER accidentally create two accounts
 by switching between Google and GitHub login.
 ```
+### GitHub Login Flow
 
-![Google Token Response](screenshots/10-google-token-response.png)
-
-![GitHub Token Response](screenshots/11-github-token-response.png)
-
-![Database OAuth2 Users](screenshots/12-database-oauth2-users.png)
-
+| Step | Screenshot |
+| :--- | :--- |
+| **GitHub Login Page** — Browser redirects to GitHub | ![GitHub Login](screenshots/10-github-login.png) |
+| **GitHub Token Response** — JSON with JWT after login | ![GitHub Token](screenshots/11-github-token.png) |
 ---
 
 ## 🧪 Part 5: Unit Testing
@@ -362,13 +365,19 @@ Header: Authorization: Bearer eyJhbGci...
 Expected: 200 OK + list of buses
 ```
 
-![Register](screenshots/02-register.png)
+### Register & Login
 
-![Login](screenshots/03-login.png)
+| Step | Screenshot |
+| :--- | :--- |
+| **Register** — `POST /api/auth/register` → `201 Created` + token | ![Register](screenshots/02-Register.png) |
+| **Login** — `POST /api/auth/login` → `200 OK` + token | ![Login](screenshots/03-Login.png) |
 
-![Protected Endpoint](screenshots/05-protected-endpoint.png)
+### Using the Token
 
-![No Token 401](screenshots/06-no-token-401.png)
+| Scenario | Screenshot |
+| :--- | :--- |
+| **With Token** — `GET /api/buses` → `200 OK` | ![Protected](screenshots/04-Protected-endpoints.png) |
+| **No Token** — `GET /api/buses` → `401 Unauthorized` | ![No Token](screenshots/05-no-token.png) |
 
 ### 2. Role-Based Access (Postman)
 
@@ -383,10 +392,12 @@ DELETE http://localhost:8080/api/users/2
 Header: Authorization: Bearer <passenger_token>
 Expected: 403 Forbidden
 ```
+### RBAC
 
-![Admin Delete 200](screenshots/07-admin-delete-200.png)
-
-![Passenger Delete 403](screenshots/08-passenger-delete-403.png)
+| Scenario | Screenshot |
+| :--- | :--- |
+| **ADMIN** `DELETE /api/users/2` → `200 OK` ✅ | ![Admin Delete](screenshots/06-admin-delete.png) |
+| **PASSENGER** `DELETE /api/users/2` → `403 Forbidden` ❌ | ![Passenger Forbidden](screenshots/07-Passenger-delete-403.png) |
 
 ### 3. OAuth2 Flow (Browser)
 
