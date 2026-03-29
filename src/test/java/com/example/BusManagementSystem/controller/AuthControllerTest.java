@@ -4,13 +4,12 @@ import com.example.BusManagementSystem.dto.AuthDTO;
 import com.example.BusManagementSystem.model.Role;
 import com.example.BusManagementSystem.model.User;
 import com.example.BusManagementSystem.repository.UserRepository;
-import com.example.BusManagementSystem.security.CustomUserDetailsService;
-import com.example.BusManagementSystem.security.JwtAuthenticationFilter;
 import com.example.BusManagementSystem.security.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +23,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(AuthController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class AuthControllerTest {
 
     @Autowired
@@ -44,12 +44,6 @@ class AuthControllerTest {
 
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
-
-    @MockBean
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    @MockBean
-    private CustomUserDetailsService userDetailsService;
 
     @Test
     void login_shouldReturnJwt_whenCredentialsAreValid() throws Exception {
