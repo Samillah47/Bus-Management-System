@@ -75,7 +75,7 @@ src/main/java/com/example/BusManagementSystem/
 
 ### How it Works
 
-![App Startup](screenshots/01-startup.png)
+![App Startup](Screenshots/01-startup.png)
 
 Every HTTP request passes through the Security Filter Chain before reaching your controllers.
 
@@ -228,8 +228,8 @@ public enum Role {
 ### Google Login Flow
 | Step | Screenshot |
 | :--- | :--- |
-| **Google Login Page** — Browser redirects to Google | ![Google Login](screenshots/08-google-login.png) |
-| **Google Token Response** — JSON with JWT after login | ![Google Token](screenshots/09-google-after-login-token.png) |
+| **Google Login Page** — Browser redirects to Google | ![Google Login](Screenshots/08-google-login.png) |
+| **Google Token Response** — JSON with JWT after login | ![Google Token](Screenshots/09-google-after-login-token.png) |
 
 ### Full OAuth2 Flow
 
@@ -280,8 +280,8 @@ by switching between Google and GitHub login.
 
 | Step | Screenshot |
 | :--- | :--- |
-| **GitHub Login Page** — Browser redirects to GitHub | ![GitHub Login](screenshots/10-github-login.png) |
-| **GitHub Token Response** — JSON with JWT after login | ![GitHub Token](screenshots/11-github-token.png) |
+| **GitHub Login Page** — Browser redirects to GitHub | ![GitHub Login](Screenshots/10-github-login.png) |
+| **GitHub Token Response** — JSON with JWT after login | ![GitHub Token](Screenshots/11-github-token.png) |
 ---
 
 ## 🧪 Part 5: Unit Testing
@@ -320,7 +320,7 @@ class UserControllerTest {
 }
 ```
 
-![Tests Passing](screenshots/13-tests-passing.png)
+![Tests Passing](Screenshots/13-tests-passing.png)
 ---
 
 ##  API Endpoints
@@ -369,15 +369,15 @@ Expected: 200 OK + list of buses
 
 | Step | Screenshot |
 | :--- | :--- |
-| **Register** — `POST /api/auth/register` → `201 Created` + token | ![Register](screenshots/02-Register.png) |
-| **Login** — `POST /api/auth/login` → `200 OK` + token | ![Login](screenshots/03-Login.png) |
+| **Register** — `POST /api/auth/register` → `201 Created` + token | ![Register](Screenshots/02-Register.png) |
+| **Login** — `POST /api/auth/login` → `200 OK` + token | ![Login](Screenshots/03-Login.png) |
 
 ### Using the Token
 
 | Scenario | Screenshot |
 | :--- | :--- |
-| **With Token** — `GET /api/buses` → `200 OK` | ![Protected](screenshots/04-Protected-endpoints.png) |
-| **No Token** — `GET /api/buses` → `401 Unauthorized` | ![No Token](screenshots/05-no-token.png) |
+| **With Token** — `GET /api/buses` → `200 OK` | ![Protected](Screenshots/04-Protected-endpoints.png) |
+| **No Token** — `GET /api/buses` → `401 Unauthorized` | ![No Token](Screenshots/05-no-token.png) |
 
 ### 2. Role-Based Access (Postman)
 
@@ -396,8 +396,8 @@ Expected: 403 Forbidden
 
 | Scenario | Screenshot |
 | :--- | :--- |
-| **ADMIN** `DELETE /api/users/2` → `200 OK` ✅ | ![Admin Delete](screenshots/06-admin-delete.png) |
-| **PASSENGER** `DELETE /api/users/2` → `403 Forbidden` ❌ | ![Passenger Forbidden](screenshots/07-Passenger-delete-403.png) |
+| **ADMIN** `DELETE /api/users/2` → `200 OK` ✅ | ![Admin Delete](Screenshots/06-admin-delete.png) |
+| **PASSENGER** `DELETE /api/users/2` → `403 Forbidden` ❌ | ![Passenger Forbidden](Screenshots/07-Passenger-delete-403.png) |
 
 ### 3. OAuth2 Flow (Browser)
 
